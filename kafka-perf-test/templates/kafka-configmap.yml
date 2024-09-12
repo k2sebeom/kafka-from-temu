@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configName }}
+  namespace: {{ .Release.Namespace }}
+data:
+  kafka.properties: |-
+    bootstrap.servers={{ .Values.bootstrapServer }}
+    security.protocol=PLAINTEXT

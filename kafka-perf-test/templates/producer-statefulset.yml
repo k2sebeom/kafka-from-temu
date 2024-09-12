@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.producer.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  podManagementPolicy: Parallel
+  replicas: {{ if .Values.producer.enabled }}{{ .Values.producer.replicas }}{{ else }}0{{ end }}
+  selector:
+    matchLabels:
+      app: {{ .Values.producer.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.producer.name }}
+    spec:
+      containers:
+      - name: perf-test
+        image: confluentinc/cp-kafka:latest
+        command:
+        - /bin/sh
+        - -c
+        - |
+          kafka-producer-perf-test \
+            --topic {{ .Values.topic }}  \
+            --record-size {{ .Values.producer.recordSize }} \
+            --throughput {{ .Values.producer.throughput }} \
+            --producer.config /mnt/kafka.properties \
+            --num-records {{ .Values.producer.numRecords }} \
+            --print-metric
+        volumeMounts:
+          - name: kafka-properties
+            mountPath: /mnt
+            readOnly: true
+        resources: {{ toYaml .Values.producer.resources | nindent 10 }}
+      volumes:
+        - name: kafka-properties
+          configMap:
+            name: {{ .Values.configName }}

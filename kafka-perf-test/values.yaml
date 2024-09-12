@@ -1,0 +1,28 @@
+topic: perf-test
+bootstrapServer: kafka-cluster.kafka:9092
+configName: kafka-properties
+recordCount: &recordCount 120000
+
+producer:
+  enabled: true
+  name: producer-perf-test
+  replicas: 1
+  recordSize: 1024
+  throughput: 1000
+  numRecords: *recordCount
+  resources:
+    requests:
+      memory: 512Mi # 768Mi
+      cpu: 500m # 1000m
+
+consumer:
+  enabled: true
+  name: consumer-perf-test
+  replicas: 1
+  group: perf-group
+  messages: *recordCount
+  reportingInterval: 1000
+  resources:
+    requests:
+      memory: 512Mi # 768Mi
+      cpu: 500m # 1000m
