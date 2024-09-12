@@ -1,15 +1,27 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.global.connect.configName }}
+  name: {{ .Values.global.ui.configName }}
   namespace: {{ .Release.Namespace }}
 data:
-  DYNAMIC_CONFIG_ENABLED: "TRUE"
+  dynamic_config.yml: |-
+    dynamic:
+      config:
+        enabled: true
+    kafka:
+      clusters:
+        - name: cluster-0
+          bootstrapServers: kafka-cluster.kafka:9092
 
-  KAFKA_CLUSTERS_0_NAME: "cluster-0"
-  KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka-cluster.kafka:9092"
-  AUTH_TYPE: "DISABLED"
-  MANAGEMENT_HEALTH_LDAP_ENABLED: "FALSE"
+          kafkaConnect:
+            - name: connect
+              address: "http://kafka-connect-cluster-connect.kafka:8083"
+          
+          schemaRegistry: "http://kafka-cluster-schema-registry.kafka:8081"
 
-  KAFKA_CLUSTERS_0_KAFKACONNECT_0_NAME: connect
-  KAFKA_CLUSTERS_0_KAFKACONNECT_0_ADDRESS: 'http://kafka-connect-cluster-connect.kafka:8083'
+    auth:
+      type: disabled
+    management:
+      health:
+        ldap:
+          enabled: false

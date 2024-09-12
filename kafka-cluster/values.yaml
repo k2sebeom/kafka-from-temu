@@ -1,6 +1,6 @@
 global:
-  connect:
-    configName: kafka-ui-configmap
+  ui:
+    configName: &kafkaUIConfigMap kafka-ui-configmap
 
 kafka:
   controller:
@@ -39,6 +39,15 @@ kafka:
     num.partitions=24
     auto.create.topics.enable=true
 
+schema-registry:
+  replicaCount: 1
+  kafka:
+    enabled: false
+  externalKafka:
+    brokers:
+      PLAINTEXT://kafka-cluster.kafka:9092
 
 kafka-ui:
-  existingConfigMap: kafka-ui-configmap
+  yamlApplicationConfigConfigMap:
+    name: *kafkaUIConfigMap
+    keyName: dynamic_config.yml
