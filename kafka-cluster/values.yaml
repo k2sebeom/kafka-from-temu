@@ -51,6 +51,9 @@ cp-ksql-server:
   kafka:
     bootstrapServers: "PLAINTEXT://kafka-cluster.kafka:9092"
 
+  ksql:
+    headless: false
+
   prometheus:
     jmx:
       enabled: false
