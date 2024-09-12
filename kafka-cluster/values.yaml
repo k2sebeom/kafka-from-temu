@@ -1,3 +1,6 @@
+global:
+  connect:
+    configName: kafka-ui-configmap
 
 kafka:
   controller:
@@ -38,14 +41,4 @@ kafka:
 
 
 kafka-ui:
-  yamlApplicationConfig:
-    kafka:
-      clusters:
-        - name: cluster-0
-          bootstrapServers: kafka-cluster.kafka:9092
-    auth:
-      type: disabled
-    management:
-      health:
-        ldap:
-          enabled: false
+  existingConfigMap: kafka-ui-configmap
