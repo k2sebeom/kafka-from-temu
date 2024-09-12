@@ -19,6 +19,8 @@ data:
           
           schemaRegistry: "http://kafka-cluster-schema-registry.kafka:8081"
 
+          ksqlDBServer: "http://kafka-cluster-cp-ksql-server.kafka:8088"
+
     auth:
       type: disabled
     management:
