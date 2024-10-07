@@ -1,8 +1,73 @@
 global:
+  # Name of the configmap to be used for UI for Kafka
   ui:
     configName: &kafkaUIConfigMap kafka-ui-configmap
 
+  # Partially override name for kafka deployment
+  nameOverride: &kafkaNameOverride kafka
+  fullnameOverride: &kafkaFullnameOverride ""
+
+  kafkaBootstrapServers: "server:9092"
+
+connect:
+  # Version of connect
+  version: 3.8.0
+  # Number of workers
+  replicas: 2
+  # Annotations for Kafka Connect Resource
+  #  # use-connector-resources configures this KafkaConnect
+  #  # to use KafkaConnector resources to avoid
+  #  # needing to call the Connect REST API directly
+  #    strimzi.io/use-connector-resources: "true"
+  annotations: {}
+    # strimzi.io/use-connector-resources: "true"
+  config:
+    group.id: connect-cluster
+    offset.storage.topic: connect-cluster-offsets
+    config.storage.topic: connect-cluster-configs
+    status.storage.topic: connect-cluster-status
+    # -1 means it will use the default replication factor configured in the broker
+    config.storage.replication.factor: -1
+    offset.storage.replication.factor: -1
+    status.storage.replication.factor: -1
+  # tls for connect
+  tls: {}
+  #   trustedCertificates:
+  #     - secretName: kafka-cluster-ca-cert
+  #       pattern: "*.crt"
+
+# Configs for Kafka UI
+ui:
+  config: |
+    dynamic:
+      config:
+        enabled: true
+    kafka:
+      clusters:
+        - name: cluster-0
+          bootstrapServers: kafka-cluster.kafka:9092
+
+          kafkaConnect:
+            - name: connect
+              address: "http://kafka-connect-cluster-connect.kafka:8083"
+          
+          schemaRegistry: "http://kafka-cluster-schema-registry.kafka:8081"
+
+          ksqlDBServer: "http://kafka-cluster-cp-ksql-server.kafka:8088"
+
+    auth:
+      type: disabled
+    management:
+      health:
+        ldap:
+          enabled: false
+
+
+
+# Check out bitnami Kafka values https://artifacthub.io/packages/helm/bitnami/kafka?modal=values
 kafka:
+  nameOverride: *kafkaNameOverride
+  fullnameOverride: *kafkaFullnameOverride
   controller:
     replicaCount: 3
     persistence:
@@ -39,7 +104,11 @@ kafka:
     num.partitions=24
     auto.create.topics.enable=true
 
+# Check out bitnami schema-registry values https://artifacthub.io/packages/helm/bitnami/schema-registry?modal=values
 schema-registry:
+  nameOverride: *kafkaNameOverride
+  fullnameOverride: *kafkaFullnameOverride
+
   replicaCount: 1
   kafka:
     enabled: false
@@ -47,7 +116,11 @@ schema-registry:
     brokers:
       PLAINTEXT://kafka-cluster.kafka:9092
 
+# Check out https://github.com/confluentinc/cp-helm-charts/blob/master/charts/cp-ksql-server/values.yaml
 cp-ksql-server:
+  nameOverride: *kafkaNameOverride
+  fullnameOverride: *kafkaFullnameOverride
+
   kafka:
     bootstrapServers: "PLAINTEXT://kafka-cluster.kafka:9092"
 
@@ -58,7 +131,11 @@ cp-ksql-server:
     jmx:
       enabled: false
 
+# Check out official doc at https://docs.kafka-ui.provectus.io/configuration/helm-charts
 kafka-ui:
+  nameOverride: *kafkaNameOverride
+  fullnameOverride: *kafkaFullnameOverride
+
   yamlApplicationConfigConfigMap:
     name: *kafkaUIConfigMap
     keyName: dynamic_config.yml

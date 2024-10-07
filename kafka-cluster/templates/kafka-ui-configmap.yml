@@ -4,26 +4,4 @@ metadata:
   name: {{ .Values.global.ui.configName }}
   namespace: {{ .Release.Namespace }}
 data:
-  dynamic_config.yml: |-
-    dynamic:
-      config:
-        enabled: true
-    kafka:
-      clusters:
-        - name: cluster-0
-          bootstrapServers: kafka-cluster.kafka:9092
-
-          kafkaConnect:
-            - name: connect
-              address: "http://kafka-connect-cluster-connect.kafka:8083"
-          
-          schemaRegistry: "http://kafka-cluster-schema-registry.kafka:8081"
-
-          ksqlDBServer: "http://kafka-cluster-cp-ksql-server.kafka:8088"
-
-    auth:
-      type: disabled
-    management:
-      health:
-        ldap:
-          enabled: false
+  dynamic_config.yml: {{ toYaml .Values.ui.config | nindent 4 }}

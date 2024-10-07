@@ -1,27 +1,16 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnect
 metadata:
-  name: kafka-connect-cluster
+  name: {{ template "kafka-comp.fullname" . }}-connect
   namespace: {{ .Release.Namespace }}
-#  annotations:
-#  # use-connector-resources configures this KafkaConnect
-#  # to use KafkaConnector resources to avoid
-#  # needing to call the Connect REST API directly
-#    strimzi.io/use-connector-resources: "true"
+  {{- if .Values.connect.annotations }}
+  annotations: {{- toYaml .Values.connect.annotations | nindent 4 }}
+  {{- end }}
 spec:
-  version: 3.8.0
-  replicas: 2
-  bootstrapServers: kafka-cluster.kafka:9092
-  # tls:
-  #   trustedCertificates:
-  #     - secretName: kafka-cluster-ca-cert
-  #       pattern: "*.crt"
-  config:
-    group.id: connect-cluster
-    offset.storage.topic: connect-cluster-offsets
-    config.storage.topic: connect-cluster-configs
-    status.storage.topic: connect-cluster-status
-    # -1 means it will use the default replication factor configured in the broker
-    config.storage.replication.factor: -1
-    offset.storage.replication.factor: -1
-    status.storage.replication.factor: -1
+  version: {{ .Values.connect.version }}
+  replicas: {{ .Values.connect.replicas }}
+  bootstrapServers: {{ .Values.global.kafkaBootstrapServers | quote }}
+  {{- if .Values.connect.tls }}
+  tls: {{- toYaml .Values.connect.tls | nindent 4 }}
+  {{- end }}
+  config: {{- toYaml .Values.connect.config | nindent 4 }}
