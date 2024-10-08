@@ -4,8 +4,8 @@ global:
     configName: &kafkaUIConfigMap kafka-ui-configmap
 
   # Partially override name for kafka deployment
-  nameOverride: &kafkaNameOverride kafka
-  fullnameOverride: &kafkaFullnameOverride ""
+  nameOverride: ""
+  fullnameOverride: ""
 
   kafkaBootstrapServers: "server:9092"
 
@@ -66,8 +66,6 @@ ui:
 
 # Check out bitnami Kafka values https://artifacthub.io/packages/helm/bitnami/kafka?modal=values
 kafka:
-  nameOverride: *kafkaNameOverride
-  fullnameOverride: *kafkaFullnameOverride
   controller:
     replicaCount: 3
     persistence:
@@ -106,9 +104,6 @@ kafka:
 
 # Check out bitnami schema-registry values https://artifacthub.io/packages/helm/bitnami/schema-registry?modal=values
 schema-registry:
-  nameOverride: *kafkaNameOverride
-  fullnameOverride: *kafkaFullnameOverride
-
   replicaCount: 1
   kafka:
     enabled: false
@@ -118,9 +113,6 @@ schema-registry:
 
 # Check out https://github.com/confluentinc/cp-helm-charts/blob/master/charts/cp-ksql-server/values.yaml
 cp-ksql-server:
-  nameOverride: *kafkaNameOverride
-  fullnameOverride: *kafkaFullnameOverride
-
   kafka:
     bootstrapServers: "PLAINTEXT://kafka-cluster.kafka:9092"
 
@@ -133,9 +125,6 @@ cp-ksql-server:
 
 # Check out official doc at https://docs.kafka-ui.provectus.io/configuration/helm-charts
 kafka-ui:
-  nameOverride: *kafkaNameOverride
-  fullnameOverride: *kafkaFullnameOverride
-
   yamlApplicationConfigConfigMap:
     name: *kafkaUIConfigMap
     keyName: dynamic_config.yml

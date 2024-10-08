@@ -8,5 +8,8 @@ dependencies:
 - name: kafka-ui
   repository: https://provectus.github.io/kafka-ui-charts
   version: 0.7.6
-digest: sha256:ab3d14b9404bdfcc35e85fec71fa430e54cd470685c61e0031585d4946aa8c3b
-generated: "2024-09-12T12:07:24.402699+09:00"
+- name: cp-ksql-server
+  repository: file://../vendors/cp-ksql-server
+  version: 0.1.0
+digest: sha256:d7d6dc8907656b9fb9ad493f3723c06c0f5c49bc47833f49ca55026f0aaa771a
+generated: "2024-10-08T12:42:41.637743+09:00"
