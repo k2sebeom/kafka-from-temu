@@ -14,6 +14,8 @@ connect:
   version: 3.8.0
   # Number of workers
   replicas: 2
+  # Image for Connect Workers
+  image: null
   # Annotations for Kafka Connect Resource
   #  # use-connector-resources configures this KafkaConnect
   #  # to use KafkaConnector resources to avoid

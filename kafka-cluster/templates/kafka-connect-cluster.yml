@@ -7,6 +7,7 @@ metadata:
   annotations: {{- toYaml .Values.connect.annotations | nindent 4 }}
   {{- end }}
 spec:
+  image: {{ .Values.connect.image | quote }}
   version: {{ .Values.connect.version }}
   replicas: {{ .Values.connect.replicas }}
   bootstrapServers: {{ .Values.global.kafkaBootstrapServers | quote }}
