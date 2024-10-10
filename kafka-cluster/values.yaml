@@ -9,6 +9,10 @@ global:
 
   kafkaBootstrapServers: "server:9092"
 
+cli:
+  enabled: false
+  image: k2sebeom/kafka-cli
+
 connect:
   # Version of connect
   version: 3.8.0

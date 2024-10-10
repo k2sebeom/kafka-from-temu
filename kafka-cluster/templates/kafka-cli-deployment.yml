@@ -1,0 +1,20 @@
+{{- if .Values.cli.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ $.Release.Namespace }}
+  name: {{ template "kafka-comp.fullname" . }}-cli
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "kafka-comp.fullname" . }}-cli
+  template:
+    metadata:
+      labels:
+        app: {{ template "kafka-comp.fullname" . }}-cli
+    spec:
+      containers:
+        - name: kafka-cli
+          image: {{ .Values.cli.image | quote }}
+{{- end }}
