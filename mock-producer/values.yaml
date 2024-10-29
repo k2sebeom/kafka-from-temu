@@ -1,0 +1,17 @@
+# Image details for the container
+image:
+  repository: nginx
+  tag: "1.21"
+
+# Container environment variables
+env:
+  - name: MY_ENV_VAR
+    value: "my-value"
+  - name: ANOTHER_ENV_VAR
+    value: "another-value"
+
+# Container name
+containerName: my-container
+
+# Pod name
+podName: my-pod
