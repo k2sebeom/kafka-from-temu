@@ -36,6 +36,8 @@ connect:
     config.storage.replication.factor: -1
     offset.storage.replication.factor: -1
     status.storage.replication.factor: -1
+  
+  externalConfiguration: {}
   # tls for connect
   tls: {}
   #   trustedCertificates:
