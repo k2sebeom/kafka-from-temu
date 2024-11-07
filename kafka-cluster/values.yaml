@@ -37,7 +37,7 @@ connect:
     offset.storage.replication.factor: -1
     status.storage.replication.factor: -1
   
-  externalConfiguration: {}
+  containerTemplate: {}
   # tls for connect
   tls: {}
   #   trustedCertificates:

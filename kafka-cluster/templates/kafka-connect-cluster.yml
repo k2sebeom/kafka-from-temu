@@ -15,6 +15,7 @@ spec:
   tls: {{- toYaml .Values.connect.tls | nindent 4 }}
   {{- end }}
   config: {{- toYaml .Values.connect.config | nindent 4 }}
-  {{- if .Values.connect.externalConfiguration }}
-  externalConfiguration: {{- toYaml .Values.connect.externalConfiguration | nindent 4 }}
+  {{- if .Values.connect.containerTemplate }}
+  template:
+    connectContainer: {{- toYaml .Values.connect.containerTemplate | nindent 6 }}
   {{- end }}
