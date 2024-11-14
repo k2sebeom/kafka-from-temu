@@ -13,5 +13,4 @@ env:
 # Container name
 containerName: my-container
 
-# Pod name
-podName: my-pod
+replicas: 1
