@@ -17,4 +17,4 @@ spec:
         - name: {{ .Values.containerName }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           env:
-          {{- toYaml .Values.env | nindent 8 }}
+          {{- toYaml .Values.env | nindent 12 }}
