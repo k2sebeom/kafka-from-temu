@@ -1,7 +1,7 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaConnect
 metadata:
-  name: {{ template "kafka-comp.fullname" . }}-connect
+  name: {{ template "kafka-comp.fullname" . }}
   namespace: {{ .Release.Namespace }}
   {{- if .Values.annotations }}
   annotations: {{- toYaml .Values.annotations | nindent 4 }}
