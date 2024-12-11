@@ -8,8 +8,11 @@ dependencies:
 - name: kafka-ui
   repository: https://provectus.github.io/kafka-ui-charts
   version: 0.7.6
+- name: strimzi-connect
+  repository: file://../vendors/strimzi-connect
+  version: 0.1.0
 - name: cp-ksql-server
   repository: file://../vendors/cp-ksql-server
   version: 0.1.0
-digest: sha256:d7d6dc8907656b9fb9ad493f3723c06c0f5c49bc47833f49ca55026f0aaa771a
-generated: "2024-10-08T12:42:41.637743+09:00"
+digest: sha256:7f2c51b9cb8b84b3ed4d9e22e278a43ad598d2919c82285f0b403c0ca99cd19d
+generated: "2024-12-11T17:51:46.97796+09:00"

@@ -1,8 +1,4 @@
 global:
-  # Name of the configmap to be used for UI for Kafka
-  ui:
-    configName: &kafkaUIConfigMap kafka-ui-configmap
-
   # Partially override name for kafka deployment
   nameOverride: ""
   fullnameOverride: ""
@@ -13,64 +9,8 @@ cli:
   enabled: false
   image: k2sebeom/kafka-cli
 
-connect:
-  # Version of connect
-  version: 3.8.0
-  # Number of workers
-  replicas: 2
-  # Image for Connect Workers
-  image: null
-  # Annotations for Kafka Connect Resource
-  #  # use-connector-resources configures this KafkaConnect
-  #  # to use KafkaConnector resources to avoid
-  #  # needing to call the Connect REST API directly
-  #    strimzi.io/use-connector-resources: "true"
-  annotations: {}
-    # strimzi.io/use-connector-resources: "true"
-  config:
-    group.id: connect-cluster
-    offset.storage.topic: connect-cluster-offsets
-    config.storage.topic: connect-cluster-configs
-    status.storage.topic: connect-cluster-status
-    # -1 means it will use the default replication factor configured in the broker
-    config.storage.replication.factor: -1
-    offset.storage.replication.factor: -1
-    status.storage.replication.factor: -1
-  
-  containerTemplate: {}
-  # tls for connect
-  tls: {}
-  #   trustedCertificates:
-  #     - secretName: kafka-cluster-ca-cert
-  #       pattern: "*.crt"
-
-# Configs for Kafka UI
-ui:
-  config: |
-    dynamic:
-      config:
-        enabled: true
-    kafka:
-      clusters:
-        - name: cluster-0
-          bootstrapServers: kafka-cluster.kafka:9092
-
-          kafkaConnect:
-            - name: connect
-              address: "http://kafka-connect-cluster-connect.kafka:8083"
-          
-          schemaRegistry: "http://kafka-cluster-schema-registry.kafka:8081"
-
-          ksqlDBServer: "http://kafka-cluster-cp-ksql-server.kafka:8088"
-
-    auth:
-      type: disabled
-    management:
-      health:
-        ldap:
-          enabled: false
-
-
+strimzi-connect:
+  fullnameOverride: connect-cluster
 
 # Check out bitnami Kafka values https://artifacthub.io/packages/helm/bitnami/kafka?modal=values
 kafka:
@@ -133,6 +73,26 @@ cp-ksql-server:
 
 # Check out official doc at https://docs.kafka-ui.provectus.io/configuration/helm-charts
 kafka-ui:
-  yamlApplicationConfigConfigMap:
-    name: *kafkaUIConfigMap
-    keyName: dynamic_config.yml
+  yamlApplicationConfig:
+    dynamic:
+      config:
+        enabled: true
+    kafka:
+      clusters:
+        - name: cluster-0
+          bootstrapServers: kafka-cluster.kafka:9092
+
+          kafkaConnect:
+            - name: connect
+              address: "http://kafka-connect-cluster-connect.kafka:8083"
+          
+          schemaRegistry: "http://kafka-cluster-schema-registry.kafka:8081"
+
+          ksqlDBServer: "http://kafka-cluster-cp-ksql-server.kafka:8088"
+
+    auth:
+      type: disabled
+    management:
+      health:
+        ldap:
+          enabled: false

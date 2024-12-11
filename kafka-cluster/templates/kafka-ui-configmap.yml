@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ .Values.global.ui.configName }}
-  namespace: {{ .Release.Namespace }}
-data:
-  dynamic_config.yml: {{ toYaml .Values.ui.config | nindent 4 }}
